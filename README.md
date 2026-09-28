@@ -14,10 +14,19 @@ the static HTML `<head>` and generally do not execute JavaScript to discover it.
   (a `grep -rl byteneza.com .` gives you the file list).
 - **Contact email**: `bytenezateam@gmail.com` is the public contact address.
 
-## 2. Deploy (any static host works: Vercel, Netlify, Cloudflare Pages, GitHub Pages)
+## 2. Deploy
 
-Upload this folder as-is. It already uses clean, extension-less URLs
-(`/services/web-development/`) via one `index.html` per folder.
+The Git repository keeps the website in `byteneza-website-seo/`. The root
+`vercel.json` and `build.js` configure Vercel to publish the site from that folder
+and expose its inquiry email function. Import the repository into Vercel and
+deploy with the default project root; the included configuration handles the
+folder layout. Set `RESEND_API_KEY` and `RESEND_FROM_EMAIL` in the Vercel project
+environment settings as described in `byteneza-website-seo/README.md`.
+
+For another static host, upload the contents of `byteneza-website-seo/` as the
+site root. The email API still needs a compatible serverless backend. The site
+uses clean, extension-less URLs (`/services/web-development/`) via one
+`index.html` per folder.
 
 ### Redirects to avoid duplicate-content URLs (configure at the host)
 Static HTML can declare a canonical tag (already done, on every page) but it
