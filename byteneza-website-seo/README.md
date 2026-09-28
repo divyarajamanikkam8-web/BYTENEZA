@@ -108,7 +108,7 @@ pages. The older class names remain as compatibility hooks for the existing page
 
 Keep each public route as its own HTML document so its title, canonical URL,
 structured data and social metadata stay available to crawlers without JavaScript.
-Use the existing `/services/[slug]/`, `/projects/[slug]/` and `/blog/[slug]/`
+Use the existing `/services/[slug]/` and `/projects/[slug]/`
 patterns for new pages. Add new routes to `sitemap.xml` and connect them from the
 relevant index and related-content links. The architecture leaves room for future
 product routes such as `/products/`, `/platform/` or `/apps/`; these can point to
