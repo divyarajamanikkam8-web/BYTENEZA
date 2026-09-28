@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /*?*
+
+Sitemap: https://www.byteneza.com/sitemap.xml
