@@ -107,17 +107,19 @@ pages. The older class names remain as compatibility hooks for the existing page
 ## 11. Contact request email delivery
 
 The site includes a Vercel Node Function at `api/inquiries.js`. It validates the
-request on the server and sends accepted project inquiries to
-`bytenezateam@gmail.com` through Resend. The Resend API key is only read from
-server environment variables and is never sent to the browser.
+request on the server and forwards accepted project inquiries to Web3Forms. The
+Web3Forms access key is read only from a server environment variable and is never
+sent to the browser. The Web3Forms form is configured as `contact form` for
+`https://byteneza.vercel.app/` and should deliver to `bytenezateam@gmail.com` as
+configured in the Web3Forms account.
 
 To enable delivery:
 
 1. Deploy this site on Vercel so `/api/inquiries` runs as a server function.
-2. Create a Resend account, verify a domain you control, and choose a sender
-   address on that verified domain.
-3. In the Vercel project settings, add `RESEND_API_KEY` and `RESEND_FROM_EMAIL`
-   for the Production environment (and Preview if desired), then redeploy.
+2. In Web3Forms, create or select the `contact form` access key for
+   `https://byteneza.vercel.app/`, with `bytenezateam@gmail.com` as the recipient.
+3. In the Vercel project settings, add `WEB3FORMS_ACCESS_KEY` with that access
+   key for the Production environment, then redeploy.
    `.env.example` lists the expected variable names; do not put real credentials
    in frontend files or commit them to source control.
 
@@ -126,7 +128,7 @@ the hosting function and environment variables are configured, the form reports
 that it could not send and shows the direct email address. If the site is hosted
 on a static-only provider, deploy the function on a compatible serverless host or
 connect `/api/inquiries` to an equivalent private backend before expecting inbox
-delivery. Resend provider errors are logged server-side without logging form data.
+delivery. Web3Forms errors are logged server-side without logging form data.
 
 ## 12. Extending the site
 

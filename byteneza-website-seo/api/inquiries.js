@@ -1,7 +1,7 @@
 const MAX_BODY_BYTES = 12 * 1024;
-const RECIPIENT = 'bytenezateam@gmail.com';
+const SITE_ORIGIN = 'https://byteneza.vercel.app';
 const SERVICES = new Set(['Web Development', 'Portfolio Solutions', 'App Development', 'AI & Automation', 'Other']);
-const TIMELINES = new Set(['ASAP', '2–4 weeks', '1–3 months', '3+ months', 'Not sure yet']);
+const TIMELINES = new Set(['ASAP', '2\u20134 weeks', '1\u20133 months', '3+ months', 'Not sure yet']);
 
 function reply(res, status, message) {
   res.status(status).json({ message });
@@ -20,9 +20,13 @@ module.exports = async function inquiries(req, res) {
 
   const origin = req.headers.origin;
   const host = req.headers['x-forwarded-host'] || req.headers.host;
-  if (origin && host) {
+  if (origin) {
     try {
-      if (new URL(origin).host !== host) return reply(res, 403, 'Request origin is not allowed.');
+      const requestOrigin = new URL(origin).origin;
+      const isLocalDevelopment = process.env.NODE_ENV !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin);
+      if ((!isLocalDevelopment && requestOrigin !== SITE_ORIGIN) || (host && new URL(requestOrigin).host !== host)) {
+        return reply(res, 403, 'Request origin is not allowed.');
+      }
     } catch (_) {
       return reply(res, 403, 'Request origin is not allowed.');
     }
@@ -61,35 +65,34 @@ module.exports = async function inquiries(req, res) {
     return reply(res, 400, 'Please check the required fields and try again.');
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL;
-  if (!apiKey || !from) {
+  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+  if (!accessKey) {
     console.error('Contact email delivery is not configured.');
     return reply(res, 503, 'Email delivery is not configured yet. Please email bytenezateam@gmail.com.');
   }
 
-  const text = [
-    'New BYTENEZA project request',
-    '',
-    `Name: ${inquiry.fullName}`,
-    `Email: ${inquiry.email}`,
-    `Phone: ${inquiry.phone}`,
-    `Company: ${inquiry.company || 'Not provided'}`,
-    `Service: ${inquiry.service}`,
-    `Timeline: ${inquiry.timeline}`,
-    `Budget: ${inquiry.budget || 'Not provided'}`,
-    '',
-    'Project description:',
-    inquiry.description
-  ].join('\n');
-
   try {
-    const response = await fetch('https://api.resend.com/emails', {
+    const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to: [RECIPIENT], reply_to: inquiry.email, subject: `Project request: ${inquiry.service}`, text })
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: accessKey,
+        subject: `[contact form] Project request: ${inquiry.service}`,
+        from_name: 'BYTENEZA Website',
+        form_name: 'contact form',
+        website: SITE_ORIGIN,
+        name: inquiry.fullName,
+        email: inquiry.email,
+        phone: inquiry.phone,
+        company: inquiry.company || 'Not provided',
+        service: inquiry.service,
+        timeline: inquiry.timeline,
+        budget: inquiry.budget || 'Not provided',
+        project_description: inquiry.description
+      })
     });
-    if (!response.ok) {
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.success !== true) {
       console.error('Email provider rejected contact request:', response.status);
       return reply(res, 502, 'We could not send your request. Please try again or email bytenezateam@gmail.com.');
     }
