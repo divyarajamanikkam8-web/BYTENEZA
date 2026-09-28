@@ -33,14 +33,14 @@ Netlify: use a `netlify.toml` or `_redirects` file. Vercel: use `vercel.json`
 `redirects`. Both are one-time config, not something this static output needs to
 contain.
 
-## 3. Contact form
+## 3. Contact details
 
-`/contact/` sends JSON to the same-origin `POST /api/inquiries` route. The static site needs a serverless function or backend at that route to accept requests. **Never expose email credentials in the frontend.** Store credentials in the server environment and validate every field again before storing or forwarding a submission.
+The `/contact/` page links to `bytenezateam@gmail.com` using the visitors email application. There is no form submission or third-party email integration.
 
 ## 4. Analytics
 
 `assets/js/analytics.js` defines `window.BZ_CONFIG` (empty by default) and a single
-`bzTrack(eventName, params)` function already wired to: contact form submit, every
+`bzTrack(eventName, params)` function already wired to: email link click, every
 "Get a Quote" button, every "Start Your Project" / "Discuss Your Idea" CTA, service
 card clicks, project card clicks, and the email link. Nothing fires anywhere until
 you set a real `gaMeasurementId` (GA4) or `metaPixelId` from an environment
@@ -103,32 +103,6 @@ for the brand palette and the shared component classes (`.button`, `.component-c
 `.service-card`, `.package-card`, `.project-card`, `.section-heading`, `.navbar`,
 `.site-footer`, `.form-field`, `.cta-section`, and `.faq-item`) when extending
 pages. The older class names remain as compatibility hooks for the existing pages.
-
-## 11. Contact request email delivery
-
-The site includes a Vercel Node Function at `api/inquiries.js`. It validates the
-request on the server and forwards accepted project inquiries to Web3Forms. The
-Web3Forms access key is read only from a server environment variable and is never
-sent to the browser. The Web3Forms form is configured as `contact form` for
-`https://byteneza.vercel.app/` and should deliver to `bytenezateam@gmail.com` as
-configured in the Web3Forms account.
-
-To enable delivery:
-
-1. Deploy this site on Vercel so `/api/inquiries` runs as a server function.
-2. In Web3Forms, create or select the `contact form` access key for
-   `https://byteneza.vercel.app/`, with `bytenezateam@gmail.com` as the recipient.
-3. In the Vercel project settings, add `WEB3FORMS_ACCESS_KEY` with that access
-   key for the Production environment, then redeploy.
-   `.env.example` lists the expected variable names; do not put real credentials
-   in frontend files or commit them to source control.
-
-The API returns success only after the email provider accepts the message. Until
-the hosting function and environment variables are configured, the form reports
-that it could not send and shows the direct email address. If the site is hosted
-on a static-only provider, deploy the function on a compatible serverless host or
-connect `/api/inquiries` to an equivalent private backend before expecting inbox
-delivery. Web3Forms errors are logged server-side without logging form data.
 
 ## 12. Extending the site
 

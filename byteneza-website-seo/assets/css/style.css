@@ -246,3 +246,18 @@ footer.site{background:var(--navy);color:#B9BEDA;padding:60px 0 30px;margin-top:
 .form-status.error-message{color:#A52B35;}
 .field input[aria-invalid="true"],.field select[aria-invalid="true"],.field textarea[aria-invalid="true"]{border-color:#A52B35;}
 button:disabled{opacity:.65;cursor:wait;transform:none;}
+.contact-hero{padding:74px 0 76px;background:var(--color-navy);color:var(--color-white);text-align:center;}
+.contact-eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 10px;color:var(--color-blue);font-size:.82rem;font-weight:700;letter-spacing:.1em;}
+.contact-eyebrow span{width:30px;height:1px;background:var(--color-blue);}
+.contact-hero h1{margin:0 0 14px;color:var(--color-white);font-size:clamp(2.8rem,7vw,4rem);letter-spacing:-.045em;line-height:1.12;}
+.contact-lead{max-width:720px;margin:0 auto;color:#B9BEDA;font-size:clamp(1rem,2.2vw,1.2rem);}
+.contact-direct{padding:42px 0 58px;background:var(--navy-2);border-top:1px solid rgba(255,255,255,.08);color:var(--color-white);text-align:center;}
+.contact-direct .container{display:flex;flex-direction:column;align-items:center;}
+.contact-mail-icon{width:48px;height:48px;margin-bottom:18px;color:var(--color-blue);}
+.contact-mail-icon svg{width:100%;height:100%;}
+.contact-direct h2{margin:0 0 14px;color:var(--color-white);font-size:1.8rem;}
+.contact-direct p{max-width:760px;margin:0 0 24px;color:#B9BEDA;font-size:1.05rem;}
+.contact-email-link{display:inline-flex;align-items:center;gap:10px;color:var(--color-blue);font-size:1.1rem;font-weight:700;}
+.contact-email-link svg{width:22px;height:22px;}
+.contact-email-link:hover{color:var(--color-white);}
+@media (max-width:600px){.contact-hero{padding:58px 0 60px;}.contact-direct{padding:36px 0 48px;}.contact-direct h2{font-size:1.55rem;}}

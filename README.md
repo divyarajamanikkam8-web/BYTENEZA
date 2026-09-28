@@ -19,6 +19,10 @@ the static HTML `<head>` and generally do not execute JavaScript to discover it.
 Upload this folder as-is. It already uses clean, extension-less URLs
 (`/services/web-development/`) via one `index.html` per folder.
 
+### Run locally
+
+Serve the static site with any local HTTP server. The contact page uses a direct email link and does not submit form data.
+
 ### Redirects to avoid duplicate-content URLs (configure at the host)
 Static HTML can declare a canonical tag (already done, on every page) but it
 can't *redirect* traffic — that's server/CDN config. Add these at your host:
@@ -33,14 +37,14 @@ Netlify: use a `netlify.toml` or `_redirects` file. Vercel: use `vercel.json`
 `redirects`. Both are one-time config, not something this static output needs to
 contain.
 
-## 3. Contact form
+## 3. Contact details
 
-`/contact/` sends JSON to the same-origin `POST /api/inquiries` route. The static site needs a serverless function or backend at that route to accept requests. **Never expose email credentials in the frontend.** Store credentials in the server environment and validate every field again before storing or forwarding a submission.
+The `/contact/` page links to `bytenezateam@gmail.com` using the visitors email application. There is no form submission or third-party email integration.
 
 ## 4. Analytics
 
 `assets/js/analytics.js` defines `window.BZ_CONFIG` (empty by default) and a single
-`bzTrack(eventName, params)` function already wired to: contact form submit, every
+`bzTrack(eventName, params)` function already wired to: email link click, every
 "Get a Quote" button, every "Start Your Project" / "Discuss Your Idea" CTA, service
 card clicks, project card clicks, and the email link. Nothing fires anywhere until
 you set a real `gaMeasurementId` (GA4) or `metaPixelId` from an environment

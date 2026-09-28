@@ -22,7 +22,6 @@ window.dataLayer = window.dataLayer || [];
  * third-party scripts until IDs are supplied.
  *
  * Tracked event names used across the site:
- *  - contact_form_submit   { service }
  *  - quote_click           { package }
  *  - start_project_click   { location }
  *  - discuss_idea_click    { location }
